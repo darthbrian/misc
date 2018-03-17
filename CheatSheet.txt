@@ -1,0 +1,11 @@
+
+Vbox stuff
+vboxmanage list runningvms
+vboxmanage showvminfo '<machine identifier>'
+
+Vi stuff
+
+ma
+mb
+'a,'bs/^/#
+
