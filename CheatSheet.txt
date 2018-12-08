@@ -1,4 +1,11 @@
 
+
+
+git stuf
+
+git clone - use only on empty directory
+git pull - get latest
+
 Vbox stuff
 vboxmanage list runningvms
 vboxmanage showvminfo '<machine identifier>'
@@ -8,4 +15,101 @@ Vi stuff
 ma
 mb
 'a,'bs/^/#
+
+
+vagrant stuff
+thor@thor-AB350N-Gaming-WIFI:~/pythonwork/git/vagrinit4$ vagrant port fred --machine-readable
+1522802679,fred,metadata,provider,virtualbox
+1522802679,,ui,info,The forwarded ports for the machine are listed below. Please note that\nthese values may differ from values configured in the Vagrantfile if the\nprovider supports automatic port collision detection and resolution.
+1522802679,,ui,info,
+1522802679,,ui,info,    22 (guest) => 2222 (host)
+1522802679,fred,forwarded_port,22,2222
+
+
+
+To run open project via docker
+docker run -d -p 8080:80 -e SECRET_KEY_BASE=secret openproject/community:7
+
+
+passwordless ssh
+
+ssh-keygen
+
+ssh-copy-id -i ~/.ssh/id_rsa.pub <remote host>
+
+ssh-copy-id -i ~/.ssh/id_rsa.pub vagrant@127.0.0.1 -p 2222
+
+ssh -p '2222' 'vagrant@127.0.0.1'
+
+
+
+### To run a bash shell inside a container
+sudo docker exec -i -t 244905a9ef26 bash
+
+### if apache failes, update /etc/apache2 config file ###
+
+### To copy all the logs from a container and redirect to an output file
+docker exec -it CONTAINER_ID bash -c "cat /var/log/supervisor/*.log" > CONTAINER_ID.log
+
+
+
+
+ansible playbook stuff
+
+multiple hosts sections in playbook
+
+What you are trying to do is quite possible, just not quite the way you're trying to do it.
+
+Method a:
+
+- name: Deploy logrotate conf if appropriate to Mongo Role
+  template: src=mongo-logrotate.conf.j2 dest=/etc/logrotate.d/{{ item.0 }} owner=root group=root mode=0644
+  with_together:
+    - "{{ mongodb_svcName | default([]) }}"
+    - "{{ mongo_port | default([]) }}"
+  when: mongo_role in ['mongod', 'mongoarb', 'mongocfg', 'mongodsa']
+
+Define a variable called mongo_role and perform a task only when it matches certain value(s) via group/inventory vars
+
+Method b:
+
+- name: Deploy logrotate conf if appropriate to Mongo Role
+  template: src=mongo-logrotate.conf.j2 dest=/etc/logrotate.d/{{ item.0 }} owner=root group=root mode=0644
+  with_together:
+    - "{{ mongodb_svcName | default([]) }}"
+    - "{{ mongo_port | default([]) }}"
+  when: "mongod" in group_names
+
+Put the hosts into groups and only execute the task if it's in the inventory group you specify
+
+
+maximum verbosity
+-v
+-vvv
+-vvvv
+
+To do debugging:
+vagrant provision --debug &> vagrant.log
+cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_NOCOLOR=true ansible-playbook --limit="all" --inventory-file=playbooks/git/hosts --become --become-user=root -vvv playbooks/git/playbook.yml
+
+history command is very important. And fun for the whole family.
+
+
+
+*** USEFUL SSH COMMANDS ***
+sudo apt-get install openssh-server
+sudo service ssh status
+sudo service ssh restart
+
+
+*** To Keep Ansible Temporary Modules ***
+export ANSIBLE_KEEP_REMOTE_FILES=1
+
+
+
+
+
+
+
+
 
