@@ -1,7 +1,7 @@
 
 
 
-git stuf
+git stuff
 
 git clone - use only on empty directory
 git pull - get latest
@@ -29,6 +29,12 @@ thor@thor-AB350N-Gaming-WIFI:~/pythonwork/git/vagrinit4$ vagrant port fred --mac
 
 To run open project via docker
 docker run -d -p 8080:80 -e SECRET_KEY_BASE=secret openproject/community:7
+
+Convert Docker container to TAR file for copying
+docker save -o /home/thor/pythonwork/git/msningest/msningest.tar msningest:latest
+
+Covert TAR file to Docker container
+docker load -i <path to image tar file>
 
 
 passwordless ssh
@@ -101,6 +107,9 @@ sudo apt-get install openssh-server
 sudo service ssh status
 sudo service ssh restart
 
+
+*** USEFUL SCP COMMANDS ***
+scp -i ~/.ssh/<pem file> <file to copy> ec2-user@<ec2 ip addr>:/home/ec2-user
 
 *** To Keep Ansible Temporary Modules ***
 export ANSIBLE_KEEP_REMOTE_FILES=1
