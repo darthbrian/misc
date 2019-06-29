@@ -27,6 +27,12 @@ thor@thor-AB350N-Gaming-WIFI:~/pythonwork/git/vagrinit4$ vagrant port fred --mac
 
 
 
+To create a docker container:
+docker build -t msningest:latest .
+
+To run docker container:
+docker run --name msningest -d -p 8000:5000 --rm msningest:latest
+
 To run open project via docker
 docker run -d -p 8080:80 -e SECRET_KEY_BASE=secret openproject/community:7
 
@@ -35,6 +41,12 @@ docker save -o /home/thor/pythonwork/git/msningest/msningest.tar msningest:lates
 
 Covert TAR file to Docker container
 docker load -i <path to image tar file>
+
+Delete old Docker Images
+docker system prune
+
+
+
 
 
 passwordless ssh
@@ -116,7 +128,12 @@ export ANSIBLE_KEEP_REMOTE_FILES=1
 
 
 
-
+*** IF PIP BLOWS UP ***
+sudo su root
+apt-get purge -y python-pip
+wget https://bootstrap.pypa.io/get-pip.py
+python ./get-pip.py
+apt-get install python-pip
 
 
 
