@@ -1,23 +1,23 @@
+*~* CHEAT SHEET *~*
 
-
-
-git stuff
+# GIT STUFF #
 
 git clone - use only on empty directory
 git pull - get latest
 
-Vbox stuff
+# VBOX STUFF #
 vboxmanage list runningvms
 vboxmanage showvminfo '<machine identifier>'
 
-Vi stuff
+# VI STUFF #
 
+# The following commands change the first letter of each line to a '#' so you can comment out multiple lines at once
 ma
 mb
 'a,'bs/^/#
 
 
-vagrant stuff
+# VAGRANT STUFF #
 thor@thor-AB350N-Gaming-WIFI:~/pythonwork/git/vagrinit4$ vagrant port fred --machine-readable
 1522802679,fred,metadata,provider,virtualbox
 1522802679,,ui,info,The forwarded ports for the machine are listed below. Please note that\nthese values may differ from values configured in the Vagrantfile if the\nprovider supports automatic port collision detection and resolution.
@@ -25,31 +25,45 @@ thor@thor-AB350N-Gaming-WIFI:~/pythonwork/git/vagrinit4$ vagrant port fred --mac
 1522802679,,ui,info,    22 (guest) => 2222 (host)
 1522802679,fred,forwarded_port,22,2222
 
+maximum verbosity
+-v
+-vvv
+-vvvv
+
+To do debugging:
+vagrant provision --debug &> vagrant.log
+cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_NOCOLOR=true ansible-playbook --limit="all" --inventory-file=playbooks/git/hosts --become --become-user=root -vvv playbooks/git/playbook.yml
 
 
-To create a docker container:
+# DOCKER STUFF #
+
+### To create a docker container:
 docker build -t msningest:latest .
 
-To run docker container:
+### To run docker container:
 docker run --name msningest -d -p 8000:5000 --rm msningest:latest
 
-To run open project via docker
+### To run open project via docker
 docker run -d -p 8080:80 -e SECRET_KEY_BASE=secret openproject/community:7
 
-Convert Docker container to TAR file for copying
+### Convert Docker container to TAR file for copying
 docker save -o /home/thor/pythonwork/git/msningest/msningest.tar msningest:latest
 
-Covert TAR file to Docker container
+### Covert TAR file to Docker container
 docker load -i <path to image tar file>
 
-Delete old Docker Images
+### Delete old Docker Images
 docker system prune
 
+### To run a bash shell inside a container:
+sudo docker exec -i -t 244905a9ef26 bash
 
+### To copy all the logs from a container and redirect to an output file:
+docker exec -it CONTAINER_ID bash -c "cat /var/log/supervisor/*.log" > CONTAINER_ID.log
 
+### if apache fails when running the OpenProject Docker image, update /etc/apache2 config file inside container ###
 
-
-passwordless ssh
+# PASSWORDLESS SSH STUFF #
 
 ssh-keygen
 
@@ -60,19 +74,10 @@ ssh-copy-id -i ~/.ssh/id_rsa.pub vagrant@127.0.0.1 -p 2222
 ssh -p '2222' 'vagrant@127.0.0.1'
 
 
+# ANSIBLE PLAYBOOK STUFF #
 
-### To run a bash shell inside a container
-sudo docker exec -i -t 244905a9ef26 bash
-
-### if apache failes, update /etc/apache2 config file ###
-
-### To copy all the logs from a container and redirect to an output file
-docker exec -it CONTAINER_ID bash -c "cat /var/log/supervisor/*.log" > CONTAINER_ID.log
-
-
-
-
-ansible playbook stuff
+### To Keep Ansible Temporary Modules:
+export ANSIBLE_KEEP_REMOTE_FILES=1
 
 multiple hosts sections in playbook
 
@@ -101,41 +106,22 @@ Method b:
 Put the hosts into groups and only execute the task if it's in the inventory group you specify
 
 
-maximum verbosity
--v
--vvv
--vvvv
-
-To do debugging:
-vagrant provision --debug &> vagrant.log
-cd /vagrant && PYTHONUNBUFFERED=1 ANSIBLE_NOCOLOR=true ansible-playbook --limit="all" --inventory-file=playbooks/git/hosts --become --become-user=root -vvv playbooks/git/playbook.yml
-
-history command is very important. And fun for the whole family.
-
-
-
-*** USEFUL SSH COMMANDS ***
+# USEFUL SSH COMMANDS #
 sudo apt-get install openssh-server
 sudo service ssh status
 sudo service ssh restart
 
-
-*** USEFUL SCP COMMANDS ***
+# USEFUL SCP COMMANDS #
 scp -i ~/.ssh/<pem file> <file to copy> ec2-user@<ec2 ip addr>:/home/ec2-user
 
-*** To Keep Ansible Temporary Modules ***
-export ANSIBLE_KEEP_REMOTE_FILES=1
+# USEFUL SH COMMANDS #
+history command is very important. And fun for the whole family.
 
-
-
-*** IF PIP BLOWS UP ***
+# IF PIP BLOWS UP #
 sudo su root
 apt-get purge -y python-pip
 wget https://bootstrap.pypa.io/get-pip.py
 python ./get-pip.py
 apt-get install python-pip
-
-
-
 
 
