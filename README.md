@@ -12,4 +12,4 @@ you can have access to this amazing and awesome information completely for free!
 
 Operators are standing by!
 
-(But not really. Just pull it. Enjoy.)
+(But not really. Just clone it. Enjoy.)
